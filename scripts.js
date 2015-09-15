@@ -66,8 +66,8 @@ $(function() {
 
     var reversed = false;
     var number = 1;
-    var operations = { left:  new Add(2),
-                       up:    new Multiply(4),
+    var operations = { left:  new Subtract(2),
+                       up:    new Divide(4),
                        right: new Add(1),
                        down:  new Multiply(2) };
 
