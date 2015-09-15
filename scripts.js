@@ -31,10 +31,14 @@ var NAMESPACE = 'mathpress';
 
 $(function() {
     var viewport = $('#viewport');
-    var space = { '-1': { '-1': true, 0: true, 1: true },
-                  0:    { '-1': true, 0: true, 1: true },
-                  1:    { '-1': true, 0: true, 1: true } };
     var position = { y: 0, x: 0 };
+    var space = {};
+    for (var y = 0; y < 10; y++) {
+        space[y] = {};
+        for (var x = 0; x < 10; x++) {
+            space[y][x] = true;
+        }
+    }
 
     var reversed = false;
     var number = 1;
