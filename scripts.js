@@ -55,7 +55,7 @@ var NAMESPACE = 'mathpress';
 
 $(function() {
     var viewport = $('#viewport');
-    var position = { y: 0, x: 0 };
+    var position = { y: 1, x: 1 };
     var space = {};
     for (var y = 0; y < 10; y++) {
         space[y] = {};
