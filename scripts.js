@@ -22,6 +22,30 @@ function Subtract(x) {
     };
 }
 
+function Multiply(x) {
+    this.act = function(n) {
+        return n * x;
+    };
+    this.toString = function() {
+        return '*' + x;
+    };
+    this.reverse = function() {
+        return this.__reverse || (this.__reverse = new Divide(x));
+    };
+}
+
+function Divide(x) {
+    this.act = function(n) {
+        return n / x;
+    };
+    this.toString = function() {
+        return '/' + x;
+    };
+    this.reverse = function() {
+        return this.__reverse || (this.__reverse = new Multiply(x));
+    };
+}
+
 var KEY_LEFT = 37;
 var KEY_UP = 38;
 var KEY_RIGHT = 39;
@@ -42,10 +66,10 @@ $(function() {
 
     var reversed = false;
     var number = 1;
-    var operations = { left:  new Add(1),
-                       up:    new Add(5),
-                       right: new Add(10),
-                       down:  new Add(50) };
+    var operations = { left:  new Add(2),
+                       up:    new Multiply(4),
+                       right: new Add(1),
+                       down:  new Multiply(2) };
 
     function draw_space() {
         for (var y = 0; y < 5; y++) {
