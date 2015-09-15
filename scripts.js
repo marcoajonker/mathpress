@@ -131,43 +131,4 @@ $(function() {
         reversed = e.type === 'keydown';
         draw_operations();
     });
-
-    /*
-    var number = 1;
-    var reverse = false;
-    var operations = {};
-    operations[KEY_LEFT]  = new Subtract(4);
-    operations[KEY_UP]    = new Add(1);
-    operations[KEY_RIGHT] = new Add(2);
-    operations[KEY_DOWN]  = new Subtract(3);
-
-    function refresh_display() {
-        $('#me').text(number);
-        $('#left').text(reverse ? operations[opposites[KEY_LEFT]].reverse() : operations[KEY_LEFT]);
-        $('#up').text(reverse ? operations[opposites[KEY_UP]].reverse() : operations[KEY_UP]);
-        $('#right').text(reverse ? operations[opposites[KEY_RIGHT]].reverse() : operations[KEY_RIGHT]);
-        $('#down').text(reverse ? operations[opposites[KEY_DOWN]].reverse() : operations[KEY_DOWN]);
-    }
-
-    refresh_display();
-    $(document).on('keydown', function(e) {
-        if (e.which === 16) {
-            reverse = true;
-            refresh_display();
-            return;
-        }
-        if (!operations[e.which]) {
-            return;
-        }
-        number = reverse ? operations[opposites[e.which]].reverse().act(number) : operations[e.which].act(number);
-        refresh_display();
-    });
-    $(document).on('keyup', function(e) {
-        if (e.which === 16) {
-            reverse = false;
-            refresh_display();
-            return;
-        }
-    });
-    */
 });
