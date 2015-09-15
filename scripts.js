@@ -2,6 +2,7 @@ var KEY_LEFT = 37;
 var KEY_UP = 38;
 var KEY_RIGHT = 39;
 var KEY_DOWN = 40;
+var KEY_SHIFT = 16;
 
 function Add(x) {
     this.act = function(n) {
@@ -29,6 +30,7 @@ function Subtract(x) {
 
 $(function() {
     var number = 1;
+    var reverse = false;
     var operations = {};
     operations[KEY_LEFT]  = new Subtract(4);
     operations[KEY_UP]    = new Add(1);
@@ -37,18 +39,30 @@ $(function() {
 
     function refresh_display() {
         $('#me').text(number);
-        $('#left').text(operations[KEY_LEFT]);
-        $('#up').text(operations[KEY_UP]);
-        $('#right').text(operations[KEY_RIGHT]);
-        $('#down').text(operations[KEY_DOWN]);
+        $('#left').text(reverse ? operations[KEY_LEFT].reverse() : operations[KEY_LEFT]);
+        $('#up').text(reverse ? operations[KEY_UP].reverse() : operations[KEY_UP]);
+        $('#right').text(reverse ? operations[KEY_RIGHT].reverse() : operations[KEY_RIGHT]);
+        $('#down').text(reverse ? operations[KEY_DOWN].reverse() : operations[KEY_DOWN]);
     }
 
     refresh_display();
     $(document).on('keydown', function(e) {
+        if (e.which === 16) {
+            reverse = true;
+            refresh_display();
+            return;
+        }
         if (!operations[e.which]) {
             return;
         }
-        number = operations[e.which].act(number);
+        number = reverse ? operations[e.which].reverse().act(number) : operations[e.which].act(number);
         refresh_display();
+    });
+    $(document).on('keyup', function(e) {
+        if (e.which === 16) {
+            reverse = false;
+            refresh_display();
+            return;
+        }
     });
 });
