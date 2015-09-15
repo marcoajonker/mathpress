@@ -1,3 +1,11 @@
 body {
     background: pink;
 }
+.wall {
+    background: black;
+    width: 20px;
+    height: 20px;
+}
+.me {
+    background: blue;
+}
