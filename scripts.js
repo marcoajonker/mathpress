@@ -26,14 +26,7 @@ var KEY_LEFT = 37;
 var KEY_UP = 38;
 var KEY_RIGHT = 39;
 var KEY_DOWN = 40;
-/*
 var KEY_SHIFT = 16;
-var opposites = {};
-opposites[KEY_LEFT] = KEY_RIGHT;
-opposites[KEY_UP] = KEY_DOWN;
-opposites[KEY_RIGHT] = KEY_LEFT;
-opposites[KEY_DOWN] = KEY_UP;
-*/
 var NAMESPACE = 'mathpress';
 
 $(function() {
@@ -42,6 +35,13 @@ $(function() {
                   0:    { '-1': true, 0: true, 1: true },
                   1:    { '-1': true, 0: true, 1: true } };
     var position = { y: 0, x: 0 };
+
+    var reversed = false;
+    var number = 1;
+    var operations = { left:  new Add(1),
+                       up:    new Add(5),
+                       right: new Add(10),
+                       down:  new Add(50) };
 
     function draw_space() {
         for (var y = 0; y < 5; y++) {
@@ -52,23 +52,36 @@ $(function() {
             }
         }
     }
+    function draw_operations() {
+        $('#cell_2_1').text(reversed ? (operations.right ? operations.right.reverse() : '') : operations.left);
+        $('#cell_1_2').text(reversed ? (operations.down  ? operations.down.reverse()  : '') : operations.up);
+        $('#cell_2_3').text(reversed ? (operations.left  ? operations.left.reverse()  : '') : operations.right);
+        $('#cell_3_2').text(reversed ? (operations.up    ? operations.up.reverse()    : '') : operations.down);
+    }
 
-    $('#cell_2_2').addClass('me');
+    $('#cell_2_2')
+        .addClass('me')
+        .text(number);
     draw_space();
     $(document).on('keydown', function(e) {
         var destination = { y: position.y, x: position.x };
+        var new_number;
         switch (e.which) {
             case KEY_LEFT:
                 destination.x--;
+                new_number = reversed ? operations.right.reverse().act(number) : operations.left.act(number);
                 break;
             case KEY_UP:
                 destination.y--;
+                new_number = reversed ? operations.down.reverse().act(number) : operations.up.act(number);
                 break;
             case KEY_RIGHT:
                 destination.x++;
+                new_number = reversed ? operations.left.reverse().act(number) : operations.right.act(number);
                 break;
             case KEY_DOWN:
                 destination.y++;
+                new_number = reversed ? operations.up.reverse().act(number) : operations.down.act(number);
                 break;
             default:
                 return;
@@ -79,6 +92,16 @@ $(function() {
         position.y = destination.y;
         position.x = destination.x;
         draw_space();
+        number = new_number;
+        $('#cell_2_2').text(number);
+    });
+    draw_operations();
+    $(document).on('keydown keyup', function(e) {
+        if (e.which !== KEY_SHIFT) {
+            return;
+        }
+        reversed = e.type === 'keydown';
+        draw_operations();
     });
 
     /*
