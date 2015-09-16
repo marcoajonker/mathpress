@@ -52,8 +52,8 @@ $(function() {
         }
         current.cell.trigger('leave');
         current.cell = next_cell;
-        current.cell.trigger('enter');
         $(window).resize();
+        current.cell.trigger('enter');
     });
 
     function load_area(area_name, start_id) {
