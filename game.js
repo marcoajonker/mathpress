@@ -23,7 +23,6 @@ $.fn.extend({
 });
 
 $(function() {
-    var block = $('#block');
     var current = { area: $(), cell: $() };
     var areas = {};
 
@@ -33,41 +32,43 @@ $(function() {
         });
     };
 
-    load_area('stage-selector');
+    var block = $('#block').triggerAnimationClass('enter-long', function() {
+        load_area('stage-selector');
 
-    $(window).on('resize', function() {
-        if (!current.area.length || !current.cell.length) {
-            return;
-        }
-        position_area(current.area, current.cell);
-    });
-
-    $(document).on('keydown', function keycontrols(e) {
-        var next_cell;
-        switch (e.which) {
-            case KEY_LEFT:
-                next_cell = current.cell.prev('.cell');
-                break;
-            case KEY_RIGHT:
-                next_cell = current.cell.next('.cell');
-                break;
-            case KEY_UP:
-            case KEY_DOWN:
-                next_cell = $(current.cell.data(KEY_NAMES[e.which]));
-                break;
-            default:
+        $(window).on('resize', function() {
+            if (!current.area.length || !current.cell.length) {
                 return;
-        }
-        if (!next_cell.length) {
-            return;
-        }
-        current.cell.trigger('leave');
-        current.cell = next_cell;
-        position_area(current.area, current.cell);
-        $(document).off('keydown', keycontrols);
-        block.triggerAnimationClass('roll-' + KEY_NAMES[e.which], function() {
-            current.cell.trigger('enter');
-            $(document).on('keydown', keycontrols);
+            }
+            position_area(current.area, current.cell);
+        });
+
+        $(document).on('keydown', function keycontrols(e) {
+            var next_cell;
+            switch (e.which) {
+                case KEY_LEFT:
+                    next_cell = current.cell.prev('.cell');
+                    break;
+                case KEY_RIGHT:
+                    next_cell = current.cell.next('.cell');
+                    break;
+                case KEY_UP:
+                case KEY_DOWN:
+                    next_cell = $(current.cell.data(KEY_NAMES[e.which]));
+                    break;
+                default:
+                    return;
+            }
+            if (!next_cell.length || next_cell.hasClass('nothing')) {
+                return;
+            }
+            current.cell.trigger('leave');
+            current.cell = next_cell;
+            position_area(current.area, current.cell);
+            $(document).off('keydown', keycontrols);
+            block.triggerAnimationClass('roll-' + KEY_NAMES[e.which], function() {
+                current.cell.trigger('enter');
+                $(document).on('keydown', keycontrols);
+            });
         });
     });
 
@@ -113,7 +114,7 @@ $(function() {
             });
             var start = element.find(start_id ? '#' + start_id : '#start').trigger('enter');
             position_area(element.appendTo('body'), start.trigger('enter'));
-            element.triggerAnimationClass('area-enter', function() {
+            element.triggerAnimationClass(last_area.length ? 'enter' : 'enter-long', function() {
                 current = { area: element, cell: start };
                 current.area.addClass('current-area');
             });
