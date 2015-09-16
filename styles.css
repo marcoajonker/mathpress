@@ -125,3 +125,18 @@ h1 {
 .load {
     background: green;
 }
+
+.area-enter {
+    animation: area-enter-animation .1s 1 ease-in-out;
+}
+@keyframes area-enter-animation {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.area-leave {
+    animation: area-leave-animation .1s 1 ease-in-out;
+}
+@keyframes area-leave-animation {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}

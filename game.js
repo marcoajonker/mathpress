@@ -38,9 +38,7 @@ $(function() {
         if (!current.area.length || !current.cell.length) {
             return;
         }
-        var position = current.cell.position();
-        current.area.css('transform', 'translate3d(' + (($(window).width() - 120 + 2) / 2 - position.left) + 'px, ' +
-                                                       (($(window).height() - 120 + 2) / 2 - position.top) + 'px, 0)');
+        position_area(current.area, current.cell);
     });
 
     $(document).on('keydown', function keycontrols(e) {
@@ -66,7 +64,7 @@ $(function() {
         }
         current.cell.trigger('leave');
         current.cell = next_cell;
-        $(window).resize();
+        position_area(current.area, current.cell);
         var roll_class;
         switch (e.which) {
             case KEY_LEFT:
@@ -124,17 +122,23 @@ $(function() {
             on_load(areas[area_name]);
         });
         function on_load(element) {
-            current.area = element;
-            current.area.appendTo('body');
-            last_area
-                .removeClass('current-area')
-                .detach();
-            current.cell = current.area.find(start_id ? '#' + start_id : '#start');
-            current.cell.trigger('enter');
-            $(window).resize();
-            setTimeout(function() {
+            last_area.triggerAnimationClass('area-leave', function() {
+                last_area
+                    .removeClass('current-area')
+                    .detach();
+            });
+            var start = element.find(start_id ? '#' + start_id : '#start').trigger('enter');
+            position_area(element.appendTo('body'), start.trigger('enter'));
+            element.triggerAnimationClass('area-enter', function() {
+                current = { area: element, cell: start };
                 current.area.addClass('current-area');
             });
         }
+    }
+
+    function position_area(area, cell) {
+        var position = cell.position();
+        area.css('transform', 'translate3d(' + (($(window).width() - 120 + 2) / 2 - position.left) + 'px, ' +
+                                               (($(window).height() - 120 + 2) / 2 - position.top) + 'px, 0)');
     }
 });
