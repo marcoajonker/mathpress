@@ -3,18 +3,33 @@ var KEY_RIGHT = 39;
 var KEY_UP = 38;
 var KEY_DOWN = 40;
 
+var cell_types = {};
+
 $(function() {
     var current = { area: $(), cell: $() };
     var areas = {};
+
+    cell_types.load = function(cell, level) {
+        cell.on('enter', function() {
+            load_area(cell.data('value'));
+        });
+    };
+
     load_area('stage-selector');
 
     $(window).on('resize', function() {
+        if (!current.area.length || !current.cell.length) {
+            return;
+        }
         var position = current.cell.position();
         current.area.css('transform', 'translate3d(' + ($(window).width() / 2 - 25 - position.left) + 'px, ' +
                                                        ($(window).height() / 2 - 25 - position.top) + 'px, 0)');
     });
 
     $(document).on('keydown', function(e) {
+        if (!current.area.length || !current.cell.length) {
+            return;
+        }
         var next_cell;
         switch (e.which) {
             case KEY_LEFT:
@@ -35,11 +50,15 @@ $(function() {
         if (!next_cell.length) {
             return;
         }
+        current.cell.trigger('leave');
         current.cell = next_cell;
+        current.cell.trigger('enter');
         $(window).resize();
     });
 
-    function load_area(area_name) {
+    function load_area(area_name, start_id) {
+        current.area.detach();
+        current = { area: $(), cell: $() };
         if (areas[area_name]) {
             return on_load(areas[area_name]);
         }
@@ -48,7 +67,8 @@ $(function() {
                 console.error('error', status);
                 return;
             }
-            var grid = areas[area_name].find('.level').find('.row').get().map(function(row) {
+            var level = areas[area_name].find('.level');
+            var grid = level.find('.row').get().map(function(row) {
                 return $(row).find('.cell,.nothing').get();
             });
             for (var y = 0; y < grid.length; y++) {
@@ -62,12 +82,16 @@ $(function() {
                     }
                 }
             }
+            level.find('[data-type]').each(function() {
+                var $this = $(this);
+                cell_types[$this.data('type')]($this, level);
+            });
             on_load(areas[area_name]);
         });
         function on_load(element) {
             current.area = element;
             current.area.appendTo('body');
-            current.cell = current.area.find('#start');
+            current.cell = current.area.find(start_id || '#start');
             current.cell.trigger('enter');
             $(window).resize();
         }
