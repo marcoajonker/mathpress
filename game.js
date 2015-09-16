@@ -173,14 +173,17 @@ $(function() {
         }
     }
 
+    var tile_width, tile_height
     function position_room(room, tile) {
         var position;
         var room_width  = room.width();
         var room_height = room.height();
         if (room_width + 2 * room_PADDING > window_width || room_height + 2 * room_PADDING > window_height) {
             position = tile.position();
+            tile_width  = tile_width  || tile.width();
+            tile_height = tile_height || tile.height();
         }
-        room.css('transform', 'translate3d(' + (room_width  + 2 * room_PADDING <= window_width  ? (window_width  - room_width)  / 2 : Math.min(room_PADDING, Math.max(window_width  - room_width  - room_PADDING, window_width  / 2 - position.left))) + 'px, ' +
-                                               (room_height + 2 * room_PADDING <= window_height ? (window_height - room_height) / 2 : Math.min(room_PADDING, Math.max(window_height - room_height - room_PADDING, window_height / 2 - position.top))) + 'px, 0)');
+        room.css('transform', 'translate3d(' + (room_width  + 2 * room_PADDING <= window_width  ? (window_width  - room_width)  / 2 : Math.min(room_PADDING, Math.max(window_width  - room_width  - room_PADDING, (window_width  - tile_width) / 2 - position.left))) + 'px, ' +
+                                               (room_height + 2 * room_PADDING <= window_height ? (window_height - room_height) / 2 : Math.min(room_PADDING, Math.max(window_height - room_height - room_PADDING, (window_height - tile_height) / 2 - position.top))) + 'px, 0)');
     }
 });
