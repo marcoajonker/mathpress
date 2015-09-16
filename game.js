@@ -27,15 +27,8 @@ $(function() {
                                                        (($(window).height() - 150 + 2) / 2 - position.top) + 'px, 0)');
     });
 
-    block.on('animationend', function(e) {
-        if (e.originalEvent.animationName.indexOf('spin-') !== 0) {
-            return;
-        }
-        block
-            .removeClass('roll-left')
-            .removeClass('roll-right')
-            .removeClass('roll-up')
-            .removeClass('roll-down');
+    $('html').on('animationend', '*', function(e) {
+        $(this).trigger('animated-' + e.originalEvent.animationName);
     });
 
     $(document).on('keydown', function(e) {
@@ -65,21 +58,31 @@ $(function() {
         current.cell.trigger('leave');
         current.cell = next_cell;
         $(window).resize();
+        var roll_class, roll_animation;
         switch (e.which) {
             case KEY_LEFT:
-                block.addClass('roll-left');
+                roll_class = 'roll-left';
+                roll_animation = 'spin-left';
                 break;
             case KEY_RIGHT:
-                block.addClass('roll-right');
+                roll_class = 'roll-right';
+                roll_animation = 'spin-right';
                 break;
             case KEY_UP:
-                block.addClass('roll-up');
+                roll_class = 'roll-up';
+                roll_animation = 'spin-up';
                 break;
             case KEY_DOWN:
-                block.addClass('roll-down');
+                roll_class = 'roll-down';
+                roll_animation = 'spin-down';
                 break;
         }
-        current.cell.trigger('enter');
+        block
+            .addClass(roll_class)
+            .one('animated-' + roll_animation, function() {
+                block.removeClass(roll_class);
+                current.cell.trigger('enter');
+            });
     });
 
     function load_area(area_name, start_id) {
@@ -119,10 +122,15 @@ $(function() {
         function on_load(element) {
             current.area = element;
             current.area.appendTo('body');
-            last_area.detach();
+            last_area
+                .removeClass('current-area')
+                .detach();
             current.cell = current.area.find(start_id ? '#' + start_id : '#start');
             current.cell.trigger('enter');
             $(window).resize();
+            setTimeout(function() {
+                current.area.addClass('current-area');
+            });
         }
     }
 });
