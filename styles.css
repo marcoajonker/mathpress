@@ -9,15 +9,15 @@ body, html {
 h1 {
     text-align: center;
     color: white;
-    width: 150px;
+    width: 225px;
 }
 .block {
     background: pink;
-    height: 40px;
+    height: 65px;
     margin: auto;
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
-    width: 40px;
+    width: 65px;
     z-index: 1;
 }
 .area {
@@ -31,8 +31,8 @@ h1 {
 }
 .cell, .nothing {
     display: table-cell;
-    height: 50px;
-    width: 50px;
+    height: 75px;
+    width: 75px;
 }
 .cell {
     background: white;

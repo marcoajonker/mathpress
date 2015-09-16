@@ -9,7 +9,7 @@ $(function() {
     var current = { area: $(), cell: $() };
     var areas = {};
 
-    cell_types.load = function(cell, level) {
+    cell_types.load = cell_types['load-hidden'] = function(cell, level) {
         cell.on('enter', function() {
             load_area(cell.data('area'), cell.data('start'));
         });
@@ -22,8 +22,8 @@ $(function() {
             return;
         }
         var position = current.cell.position();
-        current.area.css('transform', 'translate3d(' + ($(window).width() / 2 - 25 - position.left) + 'px, ' +
-                                                       ($(window).height() / 2 - 25 - position.top) + 'px, 0)');
+        current.area.css('transform', 'translate3d(' + ($(window).width() / 2 - 75 / 2 - position.left) + 'px, ' +
+                                                       ($(window).height() / 2 - 75 / 2 - position.top) + 'px, 0)');
     });
 
     $(document).on('keydown', function(e) {
@@ -94,7 +94,7 @@ $(function() {
             current.area = element;
             current.area.appendTo('body');
             last_area.detach();
-            current.cell = current.area.find(start_id || '#start');
+            current.cell = current.area.find(start_id ? '#' + start_id : '#start');
             current.cell.trigger('enter');
             $(window).resize();
         }
