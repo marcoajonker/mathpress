@@ -32,43 +32,42 @@ $(function() {
         });
     };
 
-    var block = $('#block').triggerAnimationClass('enter-long', function() {
-        load_area('stage-selector');
+    var block = $('#block');
+    load_area('stage-selector');
 
-        $(window).on('resize', function() {
-            if (!current.area.length || !current.cell.length) {
-                return;
-            }
-            position_area(current.area, current.cell);
-        });
+    $(window).on('resize', function() {
+        if (!current.area.length || !current.cell.length) {
+            return;
+        }
+        position_area(current.area, current.cell);
+    });
 
-        $(document).on('keydown', function keycontrols(e) {
-            var next_cell;
-            switch (e.which) {
-                case KEY_LEFT:
-                    next_cell = current.cell.prev('.cell');
-                    break;
-                case KEY_RIGHT:
-                    next_cell = current.cell.next('.cell');
-                    break;
-                case KEY_UP:
-                case KEY_DOWN:
-                    next_cell = $(current.cell.data(KEY_NAMES[e.which]));
-                    break;
-                default:
-                    return;
-            }
-            if (!next_cell.length || next_cell.hasClass('nothing')) {
+    $(document).on('keydown', function keycontrols(e) {
+        var next_cell;
+        switch (e.which) {
+            case KEY_LEFT:
+                next_cell = current.cell.prev('.cell');
+                break;
+            case KEY_RIGHT:
+                next_cell = current.cell.next('.cell');
+                break;
+            case KEY_UP:
+            case KEY_DOWN:
+                next_cell = $(current.cell.data(KEY_NAMES[e.which]));
+                break;
+            default:
                 return;
-            }
-            current.cell.trigger('leave');
-            current.cell = next_cell;
-            position_area(current.area, current.cell);
-            $(document).off('keydown', keycontrols);
-            block.triggerAnimationClass('roll-' + KEY_NAMES[e.which], function() {
-                current.cell.trigger('enter');
-                $(document).on('keydown', keycontrols);
-            });
+        }
+        if (!next_cell.length || next_cell.hasClass('nothing')) {
+            return;
+        }
+        current.cell.trigger('leave');
+        current.cell = next_cell;
+        position_area(current.area, current.cell);
+        $(document).off('keydown', keycontrols);
+        block.triggerAnimationClass('roll-' + KEY_NAMES[e.which], function() {
+            current.cell.trigger('enter');
+            $(document).on('keydown', keycontrols);
         });
     });
 
