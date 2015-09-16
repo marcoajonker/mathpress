@@ -38,10 +38,10 @@ $(function() {
         equal: function(tile, level) {
             var key = level.find('#' + tile.data('key'));
             tile
-                .toggleClass('nothing', key.data('value') !== tile.data('value'))
+                .toggleClass('occupied', key.data('value') !== tile.data('value'))
                 .text(tile.data('value'));
             key.on('set-value', function(e, value) {
-                tile.toggleClass('nothing', value !== tile.data('value'))
+                tile.toggleClass('occupied', value !== tile.data('value'))
             });
         },
         load: function(tile, level) {
@@ -99,7 +99,7 @@ $(function() {
             default:
                 return;
         }
-        if (!next_tile.length || next_tile.hasClass('nothing')) {
+        if (!next_tile.length || next_tile.hasClass('occupied')) {
             return;
         }
         var last_tile = current.tile.removeClass('occupied');
@@ -116,6 +116,7 @@ $(function() {
 
     function load_room(room_name, start_id) {
         var last_room = current.room;
+        var last_tile = current.tile;
         current = { room: $(), tile: $() };
         if (rooms[room_name]) {
             return on_load(rooms[room_name]);
@@ -155,11 +156,12 @@ $(function() {
                     .removeClass('current-room')
                     .detach();
             });
-            var last_tile = current.tile.removeClass('occupied');
+            last_tile.removeClass('occupied');
             current = { room: element, tile: element.find(start_id ? '#' + start_id : '#start').addClass('occupied') };
             current.room.appendTo('body');
             position_room(current.room, current.tile);
             current.room.triggerAnimationClass(last_room.length ? 'enter' : 'enter-long', function() {
+                last_tile.trigger('leave-tile');
                 current.room.find('.level').trigger('enter-room');
                 current.room.addClass('current-room');
                 current.tile.trigger('enter-tile');
