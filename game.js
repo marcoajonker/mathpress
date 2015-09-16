@@ -7,11 +7,15 @@ var cell_types = {};
 
 $.fn.extend({
     triggerAnimationClass: function(className, callback) {
-        var that = this;
-        return that
+        return this
             .addClass(className)
-            .one(className + '-animation', function() {
-                that.removeClass(className);
+            .on('animationend', function animationend(e) {
+                if (e.originalEvent.animationName !== className + '-animation') {
+                    return;
+                }
+                $(this)
+                    .off('animationend', animationend)
+                    .removeClass(className);
                 (callback || $.noop)();
             });
     }
@@ -43,7 +47,7 @@ $(function() {
                                                        (($(window).height() - 120 + 2) / 2 - position.top) + 'px, 0)');
     });
 
-    $(document).on('keydown', function key_controls(e) {
+    $(document).on('keydown', function keycontrols(e) {
         var next_cell;
         switch (e.which) {
             case KEY_LEFT:
@@ -82,10 +86,10 @@ $(function() {
                 roll_class = 'roll-down';
                 break;
         }
-        $(document).off('keydown', key_controls);
+        $(document).off('keydown', keycontrols);
         block.triggerAnimationClass(roll_class, function() {
             current.cell.trigger('enter');
-            $(document).on('keydown', key_controls);
+            $(document).on('keydown', keycontrols);
         });
     });
 
