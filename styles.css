@@ -1,0 +1,24 @@
+body {
+    background: black;
+}
+.area {
+    display: table;
+    position: absolute;
+}
+.row {
+    display: table-row;
+}
+.cell, .nothing {
+    display: table-cell;
+    height: 50px;
+    width: 50px;
+}
+.cell {
+    background: white;
+}
+.nothing {
+    background: none;
+}
+#start {
+    background: blue;
+}
