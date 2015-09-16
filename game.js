@@ -26,7 +26,7 @@ $(function() {
 
     var cell_types = {
         add: function(cell, level) {
-            cell.on('enter', function() {
+            cell.on('enter-cell', function() {
                 cell.data('to').forEach(function(id) {
                     var value_cell = level.find('#' + id);
                     value_cell.trigger('set-value', [value_cell.data('value') + cell.data('value')]);
@@ -45,12 +45,12 @@ $(function() {
             });
         },
         load: function(cell, level) {
-            cell.on('enter', function() {
+            cell.on('enter-cell', function() {
                 load_area(cell.data('area'), cell.data('start'));
             });
         },
         subtract: function(cell, level) {
-            cell.on('enter', function() {
+            cell.on('enter-cell', function() {
                 cell.data('to').forEach(function(id) {
                     var value_cell = level.find('#' + id);
                     value_cell.trigger('set-value', [value_cell.data('value') - cell.data('value')]);
@@ -63,6 +63,9 @@ $(function() {
                 cell.text(cell.data().value = value);
             });
             cell.trigger('set-value', [cell.data('value') || 0]);
+            level.on('enter-area', function() {
+                cell.trigger('set-value', [Number(cell.attr('data-value')) || 0]);
+            });
         }
     };
 
@@ -95,12 +98,12 @@ $(function() {
         if (!next_cell.length || next_cell.hasClass('nothing')) {
             return;
         }
-        current.cell.trigger('leave');
+        current.cell.trigger('leave-cell');
         current.cell = next_cell;
         position_area(current.area, current.cell);
         $(document).off('keydown', keycontrols);
         block.triggerAnimationClass('roll-' + KEY_NAMES[e.which], function() {
-            current.cell.trigger('enter');
+            current.cell.trigger('enter-cell');
             $(document).on('keydown', keycontrols);
         });
     });
@@ -142,14 +145,16 @@ $(function() {
         function on_load(element) {
             last_area.triggerAnimationClass('leave', function() {
                 last_area
+                    .trigger('leave-area')
                     .removeClass('current-area')
                     .detach();
             });
-            var start = element.find(start_id ? '#' + start_id : '#start').trigger('enter');
-            position_area(element.appendTo('body'), start.trigger('enter'));
+            var start = element.find(start_id ? '#' + start_id : '#start').trigger('enter-cell');
+            position_area(element.appendTo('body'), start);
             element.triggerAnimationClass(last_area.length ? 'enter' : 'enter-long', function() {
                 current = { area: element, cell: start };
                 current.area.addClass('current-area');
+                current.area.find('.level').trigger('enter-area');
             });
         }
     }
