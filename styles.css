@@ -15,48 +15,49 @@ h1 {
 
 
 .block {
-    height: 65px;
+    height: 120px;
     margin: auto;
-    perspective-origin: 50% 32.5px;
+    perspective-origin: 50% 60px;
     perspective: 800px;
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
-    width: 65px;
+    width: 120px;
     z-index: 1;
 }
 .block-inner {
-    height: 65px;
+    height: 120px;
     position: relative;
     transform-style: preserve-3d;
-    width: 65px;
+    width: 120px;
 }
 .block-inner div {
+    border: 1px solid black;
     background: pink;
     position: absolute;
-    width: 65px;
-    height: 65px;
+    width: 120px;
+    height: 120px;
 }
 .back {
-    transform: translateZ(-32.5px) rotateY(180deg);
+    transform: translateZ(-60px) rotateY(180deg);
 }
 .right {
-    transform: rotateY(-270deg) translateX(32.5px);
+    transform: rotateY(-270deg) translateX(60px);
     transform-origin: top right;
 }
 .left {
-    transform: rotateY(270deg) translateX(-32.5px);
+    transform: rotateY(270deg) translateX(-60px);
     transform-origin: center left;
 }
 .top {
-    transform: rotateX(-90deg) translateY(-32.5px);
+    transform: rotateX(-90deg) translateY(-60px);
     transform-origin: top center;
 }
 .bottom {
-    transform: rotateX(90deg) translateY(32.5px);
+    transform: rotateX(90deg) translateY(60px);
     transform-origin: bottom center;
 }
 .front {
-    transform: translateZ(32.5px);
+    transform: translateZ(60px);
 }
 
 .roll-left .block-inner {
@@ -84,7 +85,7 @@ h1 {
 }
 
 .roll-down .block-inner {
-    transform-origin: 0 32.5px;
+    transform-origin: 0 60px;
     animation: spin-down 0.1s 1 linear;
 }
 @keyframes spin-down {
@@ -105,8 +106,8 @@ h1 {
 }
 .cell, .nothing {
     display: table-cell;
-    height: 75px;
-    width: 75px;
+    height: 150px;
+    width: 150px;
 }
 .cell {
     background: white;

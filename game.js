@@ -23,8 +23,8 @@ $(function() {
             return;
         }
         var position = current.cell.position();
-        current.area.css('transform', 'translate3d(' + ($(window).width() / 2 - 75 / 2 - position.left) + 'px, ' +
-                                                       ($(window).height() / 2 - 75 / 2 - position.top) + 'px, 0)');
+        current.area.css('transform', 'translate3d(' + (($(window).width() - 150 + 2) / 2 - position.left) + 'px, ' +
+                                                       (($(window).height() - 150 + 2) / 2 - position.top) + 'px, 0)');
     });
 
     block.on('animationend', function(e) {
