@@ -57,7 +57,7 @@ $(function() {
     });
 
     function load_area(area_name, start_id) {
-        current.area.detach();
+        var last_area = current.area;
         current = { area: $(), cell: $() };
         if (areas[area_name]) {
             return on_load(areas[area_name]);
@@ -91,6 +91,7 @@ $(function() {
         function on_load(element) {
             current.area = element;
             current.area.appendTo('body');
+            last_area.detach();
             current.cell = current.area.find(start_id || '#start');
             current.cell.trigger('enter');
             $(window).resize();
