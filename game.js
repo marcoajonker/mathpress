@@ -6,6 +6,7 @@ var KEY_DOWN = 40;
 var cell_types = {};
 
 $(function() {
+    var block = $('#block');
     var current = { area: $(), cell: $() };
     var areas = {};
 
@@ -26,8 +27,19 @@ $(function() {
                                                        ($(window).height() / 2 - 75 / 2 - position.top) + 'px, 0)');
     });
 
+    block.on('animationend', function(e) {
+        if (e.originalEvent.animationName.indexOf('spin-') !== 0) {
+            return;
+        }
+        block
+            .removeClass('roll-left')
+            .removeClass('roll-right')
+            .removeClass('roll-up')
+            .removeClass('roll-down');
+    });
+
     $(document).on('keydown', function(e) {
-        if (!current.area.length || !current.cell.length) {
+        if (!current.area.length || !current.cell.length || block.is('.roll-left,.roll-right,.roll-up,.roll-down')) {
             return;
         }
         var next_cell;
@@ -53,6 +65,20 @@ $(function() {
         current.cell.trigger('leave');
         current.cell = next_cell;
         $(window).resize();
+        switch (e.which) {
+            case KEY_LEFT:
+                block.addClass('roll-left');
+                break;
+            case KEY_RIGHT:
+                block.addClass('roll-right');
+                break;
+            case KEY_UP:
+                block.addClass('roll-up');
+                break;
+            case KEY_DOWN:
+                block.addClass('roll-down');
+                break;
+        }
         current.cell.trigger('enter');
     });
 
