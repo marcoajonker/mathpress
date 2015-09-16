@@ -122,8 +122,17 @@ h1 {
 .nothing {
     background: none;
 }
-.load {
-    background: green;
+.fade-left {
+    background: linear-gradient(to left, white, black);
+}
+.fade-right {
+    background: linear-gradient(to right, white, black);
+}
+.fade-up {
+    background: linear-gradient(to top, white, black);
+}
+.fade-down {
+    background: linear-gradient(to bottom, white, black);
 }
 
 .area-enter {

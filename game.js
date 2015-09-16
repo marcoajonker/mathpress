@@ -27,7 +27,7 @@ $(function() {
     var current = { area: $(), cell: $() };
     var areas = {};
 
-    cell_types.load = cell_types['load-hidden'] = function(cell, level) {
+    cell_types.load = function(cell, level) {
         cell.on('enter', function() {
             load_area(cell.data('area'), cell.data('start'));
         });
