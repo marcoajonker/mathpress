@@ -69,13 +69,6 @@ $(function() {
         }
     };
 
-    $('body').on('enter-tile', '.tile', function() {
-        $(this).addClass('occupied');
-    });
-    $('body').on('leave-tile', '.tile', function() {
-        $(this).removeClass('occupied');
-    });
-
     var block = block || $('<div class="block"><div class="block-inner"><div class="front"></div><div class="back"></div><div class="top"></div><div class="bottom"></div><div class="left"></div><div class="right"></div></div></div>');
     load_room('stage-selector');
 
@@ -109,11 +102,13 @@ $(function() {
         if (!next_tile.length || next_tile.hasClass('nothing')) {
             return;
         }
-        current.tile.trigger('leave-tile');
-        current.tile = next_tile.trigger('enter-tile');
+        var last_tile = current.tile.removeClass('occupied');
+        current.tile = next_tile.addClass('occupied');
         position_room(current.room, current.tile);
         $(document).off('keydown', keycontrols);
         block.triggerAnimationClass('roll-' + KEY_NAMES[e.which], function() {
+            last_tile.trigger('leave-tile');
+            current.tile.trigger('enter-tile');
             current.tile.append(block);
             $(document).on('keydown', keycontrols);
         });
@@ -160,14 +155,14 @@ $(function() {
                     .removeClass('current-room')
                     .detach();
             });
-            var start = element.find(start_id ? '#' + start_id : '#start');
-            current = { room: element, tile: start };
+            var last_tile = current.tile.removeClass('occupied');
+            current = { room: element, tile: element.find(start_id ? '#' + start_id : '#start').addClass('occupied') };
             current.room.appendTo('body');
-            current.room.find('.level').trigger('enter-room');
-            current.tile.trigger('enter-tile');
             position_room(current.room, current.tile);
             current.room.triggerAnimationClass(last_room.length ? 'enter' : 'enter-long', function() {
+                current.room.find('.level').trigger('enter-room');
                 current.room.addClass('current-room');
+                current.tile.trigger('enter-tile');
                 current.tile.append(block);
             });
         }
