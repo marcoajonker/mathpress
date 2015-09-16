@@ -76,7 +76,7 @@ $(function() {
         $(this).removeClass('occupied');
     });
 
-    var block = $('#block');
+    var block = block || $('<div class="block"><div class="block-inner"><div class="front"></div><div class="back"></div><div class="top"></div><div class="bottom"></div><div class="left"></div><div class="right"></div></div></div>');
     load_room('stage-selector');
 
     var window_width  = $(window).width();
