@@ -11,7 +11,7 @@ $(function() {
 
     cell_types.load = function(cell, level) {
         cell.on('enter', function() {
-            load_area(cell.data('value'));
+            load_area(cell.data('area'), cell.data('start'));
         });
     };
 
