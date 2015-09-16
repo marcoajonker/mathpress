@@ -112,7 +112,7 @@ h1 {
     display: table-row;
     height: 120px;
 }
-.cell, .nothing {
+.tile, .nothing {
     display: table-cell;
     height: 120px;
     min-width: 120px;
@@ -120,7 +120,7 @@ h1 {
     vertical-align: middle;
     width: 120px;
 }
-.cell {
+.tile {
     background: white;
 }
 .occupied {

@@ -22,57 +22,57 @@ $.fn.extend({
 });
 
 $(function() {
-    var current = { area: $(), cell: $() };
+    var current = { area: $(), tile: $() };
     var areas = {};
 
-    var cell_types = {
-        add: function(cell, level) {
-            cell.on('enter-cell', function() {
-                cell.data('to').forEach(function(id) {
-                    var value_cell = level.find('#' + id);
-                    value_cell.trigger('set-value', [value_cell.data('value') + cell.data('value')]);
+    var tile_types = {
+        add: function(tile, level) {
+            tile.on('enter-tile', function() {
+                tile.data('to').forEach(function(id) {
+                    var value_tile = level.find('#' + id);
+                    value_tile.trigger('set-value', [value_tile.data('value') + tile.data('value')]);
                 });
             });
-            cell.text('+' + (cell.data('value')));
+            tile.text('+' + (tile.data('value')));
         },
-        equal: function(cell, level) {
-            var key = level.find('#' + cell.data('key'));
-            cell
-                .toggleClass('nothing', key.data('value') !== cell.data('value'))
-                .text(cell.data('value'));
+        equal: function(tile, level) {
+            var key = level.find('#' + tile.data('key'));
+            tile
+                .toggleClass('nothing', key.data('value') !== tile.data('value'))
+                .text(tile.data('value'));
             key.on('set-value', function(e, value) {
-                cell.toggleClass('nothing', value !== cell.data('value'))
+                tile.toggleClass('nothing', value !== tile.data('value'))
             });
         },
-        load: function(cell, level) {
-            cell.on('enter-cell', function() {
-                load_area(cell.data('area'), cell.data('start'));
+        load: function(tile, level) {
+            tile.on('enter-tile', function() {
+                load_area(tile.data('area'), tile.data('start'));
             });
         },
-        subtract: function(cell, level) {
-            cell.on('enter-cell', function() {
-                cell.data('to').forEach(function(id) {
-                    var value_cell = level.find('#' + id);
-                    value_cell.trigger('set-value', [value_cell.data('value') - cell.data('value')]);
+        subtract: function(tile, level) {
+            tile.on('enter-tile', function() {
+                tile.data('to').forEach(function(id) {
+                    var value_tile = level.find('#' + id);
+                    value_tile.trigger('set-value', [value_tile.data('value') - tile.data('value')]);
                 });
             });
-            cell.text('-' + (cell.data('value')));
+            tile.text('-' + (tile.data('value')));
         },
-        variable: function(cell, level) {
-            cell.on('set-value', function(e, value) {
-                cell.text(cell.data().value = value);
+        variable: function(tile, level) {
+            tile.on('set-value', function(e, value) {
+                tile.text(tile.data().value = value);
             });
-            cell.trigger('set-value', [cell.data('value') || 0]);
+            tile.trigger('set-value', [tile.data('value') || 0]);
             level.on('enter-area', function() {
-                cell.trigger('set-value', [Number(cell.attr('data-value')) || 0]);
+                tile.trigger('set-value', [Number(tile.attr('data-value')) || 0]);
             });
         }
     };
 
-    $('body').on('enter-cell', '.cell', function() {
+    $('body').on('enter-tile', '.tile', function() {
         $(this).addClass('occupied');
     });
-    $('body').on('leave-cell', '.cell', function() {
+    $('body').on('leave-tile', '.tile', function() {
         $(this).removeClass('occupied');
     });
 
@@ -84,44 +84,44 @@ $(function() {
     $(window).on('resize', function() {
         window_width  = $(window).width();
         window_height = $(window).height();
-        if (!current.area.length || !current.cell.length) {
+        if (!current.area.length || !current.tile.length) {
             return;
         }
-        position_area(current.area, current.cell);
+        position_area(current.area, current.tile);
     });
 
     $(document).on('keydown', function keycontrols(e) {
-        var next_cell;
+        var next_tile;
         switch (e.which) {
             case KEY_LEFT:
-                next_cell = current.cell.prev('.cell');
+                next_tile = current.tile.prev('.tile');
                 break;
             case KEY_RIGHT:
-                next_cell = current.cell.next('.cell');
+                next_tile = current.tile.next('.tile');
                 break;
             case KEY_UP:
             case KEY_DOWN:
-                next_cell = $(current.cell.data(KEY_NAMES[e.which]));
+                next_tile = $(current.tile.data(KEY_NAMES[e.which]));
                 break;
             default:
                 return;
         }
-        if (!next_cell.length || next_cell.hasClass('nothing')) {
+        if (!next_tile.length || next_tile.hasClass('nothing')) {
             return;
         }
-        current.cell.trigger('leave-cell');
-        current.cell = next_cell.trigger('enter-cell');
-        position_area(current.area, current.cell);
+        current.tile.trigger('leave-tile');
+        current.tile = next_tile.trigger('enter-tile');
+        position_area(current.area, current.tile);
         $(document).off('keydown', keycontrols);
         block.triggerAnimationClass('roll-' + KEY_NAMES[e.which], function() {
-            current.cell.append(block);
+            current.tile.append(block);
             $(document).on('keydown', keycontrols);
         });
     });
 
     function load_area(area_name, start_id) {
         var last_area = current.area;
-        current = { area: $(), cell: $() };
+        current = { area: $(), tile: $() };
         if (areas[area_name]) {
             return on_load(areas[area_name]);
         }
@@ -132,7 +132,7 @@ $(function() {
             }
             var level = areas[area_name].find('.level');
             var grid = level.find('.row').get().map(function(row) {
-                return $(row).find('.cell,.nothing').get();
+                return $(row).find('.tile,.nothing').get();
             });
             for (var y = 0; y < grid.length; y++) {
                 for (var x = 0; x < grid[y].length; x++) {
@@ -145,10 +145,10 @@ $(function() {
                     }
                 }
             }
-            Object.keys(cell_types).forEach(function(type) {
+            Object.keys(tile_types).forEach(function(type) {
                 level.find('.' + type).each(function() {
                     var $this = $(this);
-                    cell_types[type]($this, level);
+                    tile_types[type]($this, level);
                 });
             });
             on_load(areas[area_name]);
@@ -161,24 +161,24 @@ $(function() {
                     .detach();
             });
             var start = element.find(start_id ? '#' + start_id : '#start');
-            current = { area: element, cell: start };
+            current = { area: element, tile: start };
             current.area.appendTo('body');
             current.area.find('.level').trigger('enter-area');
-            current.cell.trigger('enter-cell');
-            position_area(current.area, current.cell);
+            current.tile.trigger('enter-tile');
+            position_area(current.area, current.tile);
             current.area.triggerAnimationClass(last_area.length ? 'enter' : 'enter-long', function() {
                 current.area.addClass('current-area');
-                current.cell.append(block);
+                current.tile.append(block);
             });
         }
     }
 
-    function position_area(area, cell) {
+    function position_area(area, tile) {
         var position;
         var area_width  = area.width();
         var area_height = area.height();
         if (area_width + 2 * AREA_PADDING > window_width || area_height + 2 * AREA_PADDING > window_height) {
-            position = cell.position();
+            position = tile.position();
         }
         area.css('transform', 'translate3d(' + (area_width  + 2 * AREA_PADDING <= window_width  ? (window_width  - area_width)  / 2 : Math.min(AREA_PADDING, Math.max(window_width  - area_width  - AREA_PADDING, window_width  / 2 - position.left))) + 'px, ' +
                                                (area_height + 2 * AREA_PADDING <= window_height ? (window_height - area_height) / 2 : Math.min(AREA_PADDING, Math.max(window_height - area_height - AREA_PADDING, window_height / 2 - position.top))) + 'px, 0)');
