@@ -60,6 +60,10 @@ h1 {
     transform: translateZ(50px);
 }
 
+.roll-left .front, .roll-right .front, .roll-up .front, .roll-down .front {
+    background: red;
+}
+
 .roll-left .block-inner {
     animation: roll-left-animation .1s 1 linear;
 }
