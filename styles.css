@@ -13,11 +13,11 @@ h1 {
 }
 .block {
     background: pink;
-    height: 50px;
+    height: 40px;
     margin: auto;
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
-    width: 50px;
+    width: 40px;
     z-index: 1;
 }
 .area {
