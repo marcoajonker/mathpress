@@ -101,6 +101,8 @@ h1 {
 
 .area {
     position: absolute;
+    margin-top: -59px;
+    margin-left: -59px;
 }
 .current-area {
     transition: all .1s ease-in-out;

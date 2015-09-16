@@ -161,7 +161,7 @@ $(function() {
 
     function position_area(area, cell) {
         var position = cell.position();
-        area.css('transform', 'translate3d(' + (($(window).width() - 120 + 2) / 2 - position.left) + 'px, ' +
-                                               (($(window).height() - 120 + 2) / 2 - position.top) + 'px, 0)');
+        area.css('transform', 'translate3d(' + ($(window).width() / 2 - position.left) + 'px, ' +
+                                               ($(window).height() / 2 - position.top) + 'px, 0)');
     }
 });
