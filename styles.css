@@ -99,10 +99,10 @@ h1 {
 
 
 
-.area {
+.room {
     position: absolute;
 }
-.current-area {
+.current-room {
     transition: all .2s ease-in-out;
 }
 .level {

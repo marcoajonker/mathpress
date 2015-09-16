@@ -1,4 +1,4 @@
-var AREA_PADDING = 50;
+var room_PADDING = 50;
 var KEY_LEFT = 37;
 var KEY_RIGHT = 39;
 var KEY_UP = 38;
@@ -22,8 +22,8 @@ $.fn.extend({
 });
 
 $(function() {
-    var current = { area: $(), tile: $() };
-    var areas = {};
+    var current = { room: $(), tile: $() };
+    var rooms = {};
 
     var tile_types = {
         add: function(tile, level) {
@@ -46,7 +46,7 @@ $(function() {
         },
         load: function(tile, level) {
             tile.on('enter-tile', function() {
-                load_area(tile.data('area'), tile.data('start'));
+                load_room(tile.data('room'), tile.data('start'));
             });
         },
         subtract: function(tile, level) {
@@ -63,7 +63,7 @@ $(function() {
                 tile.text(tile.data().value = value);
             });
             tile.trigger('set-value', [tile.data('value') || 0]);
-            level.on('enter-area', function() {
+            level.on('enter-room', function() {
                 tile.trigger('set-value', [Number(tile.attr('data-value')) || 0]);
             });
         }
@@ -77,17 +77,17 @@ $(function() {
     });
 
     var block = $('#block');
-    load_area('stage-selector');
+    load_room('stage-selector');
 
     var window_width  = $(window).width();
     var window_height = $(window).height();
     $(window).on('resize', function() {
         window_width  = $(window).width();
         window_height = $(window).height();
-        if (!current.area.length || !current.tile.length) {
+        if (!current.room.length || !current.tile.length) {
             return;
         }
-        position_area(current.area, current.tile);
+        position_room(current.room, current.tile);
     });
 
     $(document).on('keydown', function keycontrols(e) {
@@ -111,7 +111,7 @@ $(function() {
         }
         current.tile.trigger('leave-tile');
         current.tile = next_tile.trigger('enter-tile');
-        position_area(current.area, current.tile);
+        position_room(current.room, current.tile);
         $(document).off('keydown', keycontrols);
         block.triggerAnimationClass('roll-' + KEY_NAMES[e.which], function() {
             current.tile.append(block);
@@ -119,18 +119,18 @@ $(function() {
         });
     });
 
-    function load_area(area_name, start_id) {
-        var last_area = current.area;
-        current = { area: $(), tile: $() };
-        if (areas[area_name]) {
-            return on_load(areas[area_name]);
+    function load_room(room_name, start_id) {
+        var last_room = current.room;
+        current = { room: $(), tile: $() };
+        if (rooms[room_name]) {
+            return on_load(rooms[room_name]);
         }
-        areas[area_name] = $('<div class="area"></div>').load('/areas/' + area_name + '.html', function(contents, status) {
+        rooms[room_name] = $('<div class="room"></div>').load('/rooms/' + room_name + '.html', function(contents, status) {
             if (status !== 'success' && status !== 'notmodified') {
                 console.error('error', status);
                 return;
             }
-            var level = areas[area_name].find('.level');
+            var level = rooms[room_name].find('.level');
             var grid = level.find('.row').get().map(function(row) {
                 return $(row).find('.tile,.nothing').get();
             });
@@ -151,36 +151,36 @@ $(function() {
                     tile_types[type]($this, level);
                 });
             });
-            on_load(areas[area_name]);
+            on_load(rooms[room_name]);
         });
         function on_load(element) {
-            last_area.triggerAnimationClass('leave', function() {
-                last_area
-                    .trigger('leave-area')
-                    .removeClass('current-area')
+            last_room.triggerAnimationClass('leave', function() {
+                last_room
+                    .trigger('leave-room')
+                    .removeClass('current-room')
                     .detach();
             });
             var start = element.find(start_id ? '#' + start_id : '#start');
-            current = { area: element, tile: start };
-            current.area.appendTo('body');
-            current.area.find('.level').trigger('enter-area');
+            current = { room: element, tile: start };
+            current.room.appendTo('body');
+            current.room.find('.level').trigger('enter-room');
             current.tile.trigger('enter-tile');
-            position_area(current.area, current.tile);
-            current.area.triggerAnimationClass(last_area.length ? 'enter' : 'enter-long', function() {
-                current.area.addClass('current-area');
+            position_room(current.room, current.tile);
+            current.room.triggerAnimationClass(last_room.length ? 'enter' : 'enter-long', function() {
+                current.room.addClass('current-room');
                 current.tile.append(block);
             });
         }
     }
 
-    function position_area(area, tile) {
+    function position_room(room, tile) {
         var position;
-        var area_width  = area.width();
-        var area_height = area.height();
-        if (area_width + 2 * AREA_PADDING > window_width || area_height + 2 * AREA_PADDING > window_height) {
+        var room_width  = room.width();
+        var room_height = room.height();
+        if (room_width + 2 * room_PADDING > window_width || room_height + 2 * room_PADDING > window_height) {
             position = tile.position();
         }
-        area.css('transform', 'translate3d(' + (area_width  + 2 * AREA_PADDING <= window_width  ? (window_width  - area_width)  / 2 : Math.min(AREA_PADDING, Math.max(window_width  - area_width  - AREA_PADDING, window_width  / 2 - position.left))) + 'px, ' +
-                                               (area_height + 2 * AREA_PADDING <= window_height ? (window_height - area_height) / 2 : Math.min(AREA_PADDING, Math.max(window_height - area_height - AREA_PADDING, window_height / 2 - position.top))) + 'px, 0)');
+        room.css('transform', 'translate3d(' + (room_width  + 2 * room_PADDING <= window_width  ? (window_width  - room_width)  / 2 : Math.min(room_PADDING, Math.max(window_width  - room_width  - room_PADDING, window_width  / 2 - position.left))) + 'px, ' +
+                                               (room_height + 2 * room_PADDING <= window_height ? (window_height - room_height) / 2 : Math.min(room_PADDING, Math.max(window_height - room_height - room_PADDING, window_height / 2 - position.top))) + 'px, 0)');
     }
 });
