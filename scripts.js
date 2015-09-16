@@ -5,11 +5,13 @@ var KEY_DOWN = 40;
 
 $(function() {
     var current = { area: $(), cell: $() };
+    var areas = {};
+    load_area('stage-selector');
 
     $(window).on('resize', function() {
         var position = current.cell.position();
-        current.area.offset({ top:  ($(window).height() - current.cell.height()) / 2 - position.top,
-                              left: ($(window).width()  - current.cell.width()) / 2 - position.left });
+        current.area.css('transform', 'translate3d(' + ($(window).width() / 2 - position.left) + 'px, ' +
+                                                       ($(window).height() / 2 - position.top) + 'px, 0)');
     });
 
     $(document).on('keydown', function(e) {
@@ -37,19 +39,7 @@ $(function() {
         $(window).resize();
     });
 
-    var areas = {};
-    load_area('stage-selector');
     function load_area(area_name) {
-        function on_load(element) {
-            current.area = element;
-            current.area
-                .css('visibility', 'hidden')
-                .appendTo('body');
-            current.cell = current.area.find('#start');
-            current.cell.trigger('enter');
-            $(window).resize();
-            current.area.css('visibility', 'initial');
-        }
         if (areas[area_name]) {
             return on_load(areas[area_name]);
         }
@@ -74,5 +64,12 @@ $(function() {
             }
             on_load(areas[area_name]);
         });
+        function on_load(element) {
+            current.area = element;
+            current.area.appendTo('body');
+            current.cell = current.area.find('#start');
+            current.cell.trigger('enter');
+            $(window).resize();
+        }
     }
 });
