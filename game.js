@@ -5,7 +5,23 @@ var KEY_DOWN = 40;
 
 var cell_types = {};
 
+$.fn.extend({
+    triggerAnimationClass: function(className, callback) {
+        var that = this;
+        return that
+            .addClass(className)
+            .one(className + '-animation', function() {
+                that.removeClass(className);
+                (callback || $.noop)();
+            });
+    }
+});
+
 $(function() {
+    $('html').on('animationend', '*', function(e) {
+        $(this).trigger(e.originalEvent.animationName);
+    });
+
     var block = $('#block');
     var current = { area: $(), cell: $() };
     var areas = {};
@@ -27,14 +43,7 @@ $(function() {
                                                        (($(window).height() - 120 + 2) / 2 - position.top) + 'px, 0)');
     });
 
-    $('html').on('animationend', '*', function(e) {
-        $(this).trigger(e.originalEvent.animationName);
-    });
-
-    $(document).on('keydown', function(e) {
-        if (!current.area.length || !current.cell.length || block.is('.roll-left,.roll-right,.roll-up,.roll-down')) {
-            return;
-        }
+    $(document).on('keydown', function key_controls(e) {
         var next_cell;
         switch (e.which) {
             case KEY_LEFT:
@@ -73,12 +82,11 @@ $(function() {
                 roll_class = 'roll-down';
                 break;
         }
-        block
-            .addClass(roll_class)
-            .one(roll_class + '-animation', function() {
-                block.removeClass(roll_class);
-                current.cell.trigger('enter');
-            });
+        $(document).off('keydown', key_controls);
+        block.triggerAnimationClass(roll_class, function() {
+            current.cell.trigger('enter');
+            $(document).on('keydown', key_controls);
+        });
     });
 
     function load_area(area_name, start_id) {
