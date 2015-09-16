@@ -4,8 +4,6 @@ var KEY_UP = 38;
 var KEY_DOWN = 40;
 var KEY_NAMES = { 37: 'left', 39: 'right', 38: 'up', 40: 'down' };
 
-var cell_types = {};
-
 $.fn.extend({
     triggerAnimationClass: function(className, callback) {
         return this
@@ -26,10 +24,46 @@ $(function() {
     var current = { area: $(), cell: $() };
     var areas = {};
 
-    cell_types.load = function(cell, level) {
-        cell.on('enter', function() {
-            load_area(cell.data('area'), cell.data('start'));
-        });
+    var cell_types = {
+        add: function(cell, level) {
+            cell.on('enter', function() {
+                cell.data('to').forEach(function(id) {
+                    var value_cell = level.find('#' + id);
+                    value_cell.trigger('set-value', [value_cell.data('value') + cell.data('value')]);
+                });
+            });
+            cell.text('+' + (cell.data('value')));
+        },
+        equal: function(cell, level) {
+            console.log(JSON.stringify(cell.data('key')));
+            var key = level.find('#' + cell.data('key'));
+            cell
+                .toggleClass('nothing', key.data('value') !== cell.data('value'))
+                .text(cell.data('value'));
+            key.on('set-value', function(e, value) {
+                cell.toggleClass('nothing', value !== cell.data('value'))
+            });
+        },
+        load: function(cell, level) {
+            cell.on('enter', function() {
+                load_area(cell.data('area'), cell.data('start'));
+            });
+        },
+        subtract: function(cell, level) {
+            cell.on('enter', function() {
+                cell.data('to').forEach(function(id) {
+                    var value_cell = level.find('#' + id);
+                    value_cell.trigger('set-value', [value_cell.data('value') - cell.data('value')]);
+                });
+            });
+            cell.text('-' + (cell.data('value')));
+        },
+        variable: function(cell, level) {
+            cell.on('set-value', function(e, value) {
+                cell.text(cell.data().value = value);
+            });
+            cell.trigger('set-value', [cell.data('value') || 0]);
+        }
     };
 
     var block = $('#block');

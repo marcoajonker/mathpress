@@ -110,17 +110,32 @@ h1 {
 }
 .row {
     display: table-row;
+    height: 120px;
 }
 .cell, .nothing {
     display: table-cell;
     height: 120px;
+    text-align: center;
+    vertical-align: middle;
     width: 120px;
 }
 .cell {
     background: white;
 }
+.add {
+    background: green;
+}
+.equal {
+    color: blue;
+}
+.subtract {
+    background: red;
+}
 .nothing {
     background: none;
+}
+.variable {
+    background: yellow;
 }
 .fade-left {
     background: linear-gradient(to left, white, black);
