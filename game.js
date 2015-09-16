@@ -107,7 +107,7 @@ $(function() {
             on_load(areas[area_name]);
         });
         function on_load(element) {
-            last_area.triggerAnimationClass('area-leave', function() {
+            last_area.triggerAnimationClass('leave', function() {
                 last_area
                     .removeClass('current-area')
                     .detach();

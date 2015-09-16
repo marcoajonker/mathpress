@@ -135,21 +135,6 @@ h1 {
     background: linear-gradient(to bottom, white, black);
 }
 
-.area-enter {
-    animation: area-enter-animation .2s 1 ease-in-out;
-}
-@keyframes area-enter-animation {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-.area-leave {
-    animation: area-leave-animation .2s 1 ease-in-out;
-}
-@keyframes area-leave-animation {
-    from { opacity: 1; }
-    to { opacity: 0; }
-}
-
 
 
 .enter {
@@ -158,6 +143,13 @@ h1 {
 @keyframes enter-animation {
     from { opacity: 0; }
     to { opacity: 1; }
+}
+.leave {
+    animation: leave-animation .2s 1 ease-in-out;
+}
+@keyframes leave-animation {
+    from { opacity: 1; }
+    to { opacity: 0; }
 }
 .enter-long {
     animation: enter-long-animation 1s 1 ease-in-out;
