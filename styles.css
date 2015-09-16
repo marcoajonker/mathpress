@@ -40,6 +40,6 @@ h1 {
 .nothing {
     background: none;
 }
-[data-type=load] {
+.load {
     background: green;
 }

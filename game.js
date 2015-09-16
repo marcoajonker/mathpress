@@ -82,9 +82,11 @@ $(function() {
                     }
                 }
             }
-            level.find('[data-type]').each(function() {
-                var $this = $(this);
-                cell_types[$this.data('type')]($this, level);
+            Object.keys(cell_types).forEach(function(type) {
+                level.find('.' + type).each(function() {
+                    var $this = $(this);
+                    cell_types[type]($this, level);
+                });
             });
             on_load(areas[area_name]);
         });
