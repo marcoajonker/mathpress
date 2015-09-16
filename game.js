@@ -22,10 +22,6 @@ $.fn.extend({
 });
 
 $(function() {
-    $('html').on('animationend', '*', function(e) {
-        $(this).trigger(e.originalEvent.animationName);
-    });
-
     var block = $('#block');
     var current = { area: $(), cell: $() };
     var areas = {};
