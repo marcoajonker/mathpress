@@ -2,6 +2,7 @@ var KEY_LEFT = 37;
 var KEY_RIGHT = 39;
 var KEY_UP = 38;
 var KEY_DOWN = 40;
+var KEY_NAMES = { 37: 'left', 39: 'right', 38: 'up', 40: 'down' };
 
 var cell_types = {};
 
@@ -51,10 +52,8 @@ $(function() {
                 next_cell = current.cell.next('.cell');
                 break;
             case KEY_UP:
-                next_cell = $(current.cell.data('up'));
-                break;
             case KEY_DOWN:
-                next_cell = $(current.cell.data('down'));
+                next_cell = $(current.cell.data(KEY_NAMES[e.which]));
                 break;
             default:
                 return;
@@ -65,23 +64,8 @@ $(function() {
         current.cell.trigger('leave');
         current.cell = next_cell;
         position_area(current.area, current.cell);
-        var roll_class;
-        switch (e.which) {
-            case KEY_LEFT:
-                roll_class = 'roll-left';
-                break;
-            case KEY_RIGHT:
-                roll_class = 'roll-right';
-                break;
-            case KEY_UP:
-                roll_class = 'roll-up';
-                break;
-            case KEY_DOWN:
-                roll_class = 'roll-down';
-                break;
-        }
         $(document).off('keydown', keycontrols);
-        block.triggerAnimationClass(roll_class, function() {
+        block.triggerAnimationClass('roll-' + KEY_NAMES[e.which], function() {
             current.cell.trigger('enter');
             $(document).on('keydown', keycontrols);
         });
