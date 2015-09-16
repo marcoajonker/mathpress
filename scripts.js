@@ -10,8 +10,8 @@ $(function() {
 
     $(window).on('resize', function() {
         var position = current.cell.position();
-        current.area.css('transform', 'translate3d(' + ($(window).width() / 2 - position.left) + 'px, ' +
-                                                       ($(window).height() / 2 - position.top) + 'px, 0)');
+        current.area.css('transform', 'translate3d(' + ($(window).width() / 2 - 25 - position.left) + 'px, ' +
+                                                       ($(window).height() / 2 - 25 - position.top) + 'px, 0)');
     });
 
     $(document).on('keydown', function(e) {
@@ -48,7 +48,7 @@ $(function() {
                 console.error('error', status);
                 return;
             }
-            var grid = areas[area_name].find('.row').get().map(function(row) {
+            var grid = areas[area_name].find('.level').find('.row').get().map(function(row) {
                 return $(row).find('.cell,.nothing').get();
             });
             for (var y = 0; y < grid.length; y++) {

@@ -1,12 +1,30 @@
 body {
     background: black;
+    margin: 0;
+    padding: 0;
 }
 body, html {
     overflow: hidden;
 }
-.area {
-    display: table;
+h1 {
+    text-align: center;
+    color: white;
+    width: 150px;
+}
+.block {
+    background: pink;
+    height: 50px;
+    margin: auto;
     position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    width: 50px;
+    z-index: 1;
+}
+.area {
+    position: absolute;
+}
+.level {
+    display: table;
 }
 .row {
     display: table-row;
