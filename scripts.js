@@ -1,36 +1,78 @@
+var KEY_LEFT = 37;
+var KEY_RIGHT = 39;
+var KEY_UP = 38;
+var KEY_DOWN = 40;
+
 $(function() {
+    var current = { area: $(), cell: $() };
+
+    $(window).on('resize', function() {
+        var position = current.cell.position();
+        current.area.offset({ top:  ($(window).height() - current.cell.height()) / 2 - position.top,
+                              left: ($(window).width()  - current.cell.width()) / 2 - position.left });
+    });
+
+    $(document).on('keydown', function(e) {
+        var next_cell;
+        switch (e.which) {
+            case KEY_LEFT:
+                next_cell = current.cell.prev('.cell');
+                break;
+            case KEY_RIGHT:
+                next_cell = current.cell.next('.cell');
+                break;
+            case KEY_UP:
+                next_cell = $(current.cell.data('up'));
+                break;
+            case KEY_DOWN:
+                next_cell = $(current.cell.data('down'));
+                break;
+            default:
+                return;
+        }
+        if (!next_cell.length) {
+            return;
+        }
+        current.cell = next_cell;
+        $(window).resize();
+    });
+
     var areas = {};
-    function load_area(area_name, callback) {
+    load_area('stage-selector');
+    function load_area(area_name) {
+        function on_load(element) {
+            current.area = element;
+            current.area
+                .css('visibility', 'hidden')
+                .appendTo('body');
+            current.cell = current.area.find('#start');
+            current.cell.trigger('enter');
+            $(window).resize();
+            current.area.css('visibility', 'initial');
+        }
         if (areas[area_name]) {
-            return callback(null, areas[area_name]);
+            return on_load(areas[area_name]);
         }
         areas[area_name] = $('<div class="area"></div>').load('/areas/' + area_name + '.html', function(contents, status) {
             if (status !== 'success' && status !== 'notmodified') {
-                return callback(status);
+                console.error('error', status);
+                return;
             }
-            callback(null, areas[area_name]);
+            var grid = areas[area_name].find('.row').get().map(function(row) {
+                return $(row).find('.cell,.nothing').get();
+            });
+            for (var y = 0; y < grid.length; y++) {
+                for (var x = 0; x < grid[y].length; x++) {
+                    var $this = $(grid[y][x]);
+                    if (y > 0 && !$(grid[y - 1][x]).hasClass('nothing')) {
+                        $this.data('up', grid[y - 1][x]);
+                    }
+                    if (y < grid.length - 1 && !$(grid[y + 1][x]).hasClass('nothing')) {
+                        $this.data('down', grid[y + 1][x]);
+                    }
+                }
+            }
+            on_load(areas[area_name]);
         });
     }
-
-    var area = $();
-    var cell = $();
-
-    $(window).on('resize', function() {
-        var position = cell.position();
-        area.offset({ top:  ($(window).height() - cell.height()) / 2 - position.top,
-                      left: ($(window).width()  - cell.width()) / 2 - position.left });
-    });
-
-    load_area('stage-selector', function(err, element) {
-        if (err) {
-            return;
-        }
-        area = element;
-        element
-            .css('visibility', 'hidden')
-            .appendTo('body');
-        cell = element.find('#start');
-        $(window).resize();
-        element.css('visibility', 'initial');
-    });
 });

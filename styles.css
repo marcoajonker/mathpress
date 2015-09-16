@@ -1,6 +1,9 @@
 body {
     background: black;
 }
+body, html {
+    overflow: hidden;
+}
 .area {
     display: table;
     position: absolute;
@@ -18,7 +21,4 @@ body {
 }
 .nothing {
     background: none;
-}
-#start {
-    background: blue;
 }
