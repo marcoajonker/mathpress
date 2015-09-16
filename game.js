@@ -163,11 +163,11 @@ $(function() {
             var start = element.find(start_id ? '#' + start_id : '#start');
             current = { area: element, cell: start };
             current.area.appendTo('body');
-            current.area.addClass('current-area');
             current.area.find('.level').trigger('enter-area');
             current.cell.trigger('enter-cell');
             position_area(current.area, current.cell);
-            element.triggerAnimationClass(last_area.length ? 'enter' : 'enter-long', function() {
+            current.area.triggerAnimationClass(last_area.length ? 'enter' : 'enter-long', function() {
+                current.area.addClass('current-area');
                 current.cell.append(block);
             });
         }
