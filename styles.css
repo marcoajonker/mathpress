@@ -61,34 +61,34 @@ h1 {
 }
 
 .roll-left .block-inner {
-    animation: spin-left .1s 1 linear;
+    animation: roll-left-animation .1s 1 linear;
 }
-@keyframes spin-left {
+@keyframes roll-left-animation {
     from { transform: rotateY(0); }
     to { transform: rotateY(-90deg); }
 }
 
 .roll-right .block-inner {
-    animation: spin-right .1s 1 linear;
+    animation: roll-right-animation .1s 1 linear;
 }
-@keyframes spin-right {
+@keyframes roll-right-animation {
     from { transform: rotateY(0); }
     to { transform: rotateY(90deg); }
 }
 
 .roll-up .block-inner {
-    animation: spin-up .1s 1 linear;
+    animation: roll-up-animation .1s 1 linear;
 }
-@keyframes spin-up {
+@keyframes roll-up-animation {
     from { transform: rotateX(0); }
     to { transform: rotateX(90deg); }
 }
 
 .roll-down .block-inner {
     transform-origin: 0 60px;
-    animation: spin-down .1s 1 linear;
+    animation: roll-down-animation .1s 1 linear;
 }
-@keyframes spin-down {
+@keyframes roll-down-animation {
     from { transform: rotateX(0); }
     to { transform: rotateX(-90deg); }
 }

@@ -28,7 +28,7 @@ $(function() {
     });
 
     $('html').on('animationend', '*', function(e) {
-        $(this).trigger('animated-' + e.originalEvent.animationName);
+        $(this).trigger(e.originalEvent.animationName);
     });
 
     $(document).on('keydown', function(e) {
@@ -58,28 +58,24 @@ $(function() {
         current.cell.trigger('leave');
         current.cell = next_cell;
         $(window).resize();
-        var roll_class, roll_animation;
+        var roll_class;
         switch (e.which) {
             case KEY_LEFT:
                 roll_class = 'roll-left';
-                roll_animation = 'spin-left';
                 break;
             case KEY_RIGHT:
                 roll_class = 'roll-right';
-                roll_animation = 'spin-right';
                 break;
             case KEY_UP:
                 roll_class = 'roll-up';
-                roll_animation = 'spin-up';
                 break;
             case KEY_DOWN:
                 roll_class = 'roll-down';
-                roll_animation = 'spin-down';
                 break;
         }
         block
             .addClass(roll_class)
-            .one('animated-' + roll_animation, function() {
+            .one(roll_class + '-animation', function() {
                 block.removeClass(roll_class);
                 current.cell.trigger('enter');
             });
