@@ -19,10 +19,7 @@ h1 {
     margin: auto;
     perspective-origin: 50% 50px;
     perspective: 800px;
-    position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
     width: 100px;
-    z-index: 1;
 }
 .block-inner {
     height: 100px;
@@ -65,47 +62,48 @@ h1 {
 }
 
 .roll-left .block-inner {
-    animation: roll-left-animation .1s 1 linear;
+    animation: roll-left-animation .2s 1 linear;
+    transform-origin: -10px center -50px;
 }
 @keyframes roll-left-animation {
     from { transform: rotateY(0); }
-    to { transform: rotateY(-90deg); }
+    to   { transform: rotateY(-90deg); }
 }
 
 .roll-right .block-inner {
-    animation: roll-right-animation .1s 1 linear;
+    animation: roll-right-animation .2s 1 linear;
+    transform-origin: 110px center -50px;
 }
 @keyframes roll-right-animation {
     from { transform: rotateY(0); }
-    to { transform: rotateY(90deg); }
+    to   { transform: rotateY(90deg); }
 }
 
 .roll-up .block-inner {
-    animation: roll-up-animation .1s 1 linear;
+    animation: roll-up-animation .2s 1 linear;
+    transform-origin: center -10px -50px;
 }
 @keyframes roll-up-animation {
     from { transform: rotateX(0); }
-    to { transform: rotateX(90deg); }
+    to   { transform: rotateX(90deg); }
 }
 
 .roll-down .block-inner {
-    transform-origin: 0 50px;
-    animation: roll-down-animation .1s 1 linear;
+    animation: roll-down-animation .2s 1 linear;
+    transform-origin: center 110px -50px;
 }
 @keyframes roll-down-animation {
     from { transform: rotateX(0); }
-    to { transform: rotateX(-90deg); }
+    to   { transform: rotateX(-90deg); }
 }
 
 
 
 .area {
     position: absolute;
-    margin-top: -59px;
-    margin-left: -59px;
 }
 .current-area {
-    transition: all .1s ease-in-out;
+    transition: all .2s ease-in-out;
 }
 .level {
     display: table;
@@ -117,12 +115,16 @@ h1 {
 .cell, .nothing {
     display: table-cell;
     height: 120px;
+    min-width: 120px;
     text-align: center;
     vertical-align: middle;
     width: 120px;
 }
 .cell {
     background: white;
+}
+.occupied {
+    background: grey;
 }
 .add {
     background: green;

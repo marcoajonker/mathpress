@@ -1,3 +1,4 @@
+var AREA_PADDING = 50;
 var KEY_LEFT = 37;
 var KEY_RIGHT = 39;
 var KEY_UP = 38;
@@ -35,7 +36,6 @@ $(function() {
             cell.text('+' + (cell.data('value')));
         },
         equal: function(cell, level) {
-            console.log(JSON.stringify(cell.data('key')));
             var key = level.find('#' + cell.data('key'));
             cell
                 .toggleClass('nothing', key.data('value') !== cell.data('value'))
@@ -69,10 +69,21 @@ $(function() {
         }
     };
 
+    $('body').on('enter-cell', '.cell', function() {
+        $(this).addClass('occupied');
+    });
+    $('body').on('leave-cell', '.cell', function() {
+        $(this).removeClass('occupied');
+    });
+
     var block = $('#block');
     load_area('stage-selector');
 
+    var window_width  = $(window).width();
+    var window_height = $(window).height();
     $(window).on('resize', function() {
+        window_width  = $(window).width();
+        window_height = $(window).height();
         if (!current.area.length || !current.cell.length) {
             return;
         }
@@ -99,11 +110,11 @@ $(function() {
             return;
         }
         current.cell.trigger('leave-cell');
-        current.cell = next_cell;
+        current.cell = next_cell.trigger('enter-cell');
         position_area(current.area, current.cell);
         $(document).off('keydown', keycontrols);
         block.triggerAnimationClass('roll-' + KEY_NAMES[e.which], function() {
-            current.cell.trigger('enter-cell');
+            current.cell.append(block);
             $(document).on('keydown', keycontrols);
         });
     });
@@ -149,19 +160,27 @@ $(function() {
                     .removeClass('current-area')
                     .detach();
             });
-            var start = element.find(start_id ? '#' + start_id : '#start').trigger('enter-cell');
-            position_area(element.appendTo('body'), start);
+            var start = element.find(start_id ? '#' + start_id : '#start');
+            current = { area: element, cell: start };
+            current.area.appendTo('body');
+            current.area.addClass('current-area');
+            current.area.find('.level').trigger('enter-area');
+            current.cell.trigger('enter-cell');
+            position_area(current.area, current.cell);
             element.triggerAnimationClass(last_area.length ? 'enter' : 'enter-long', function() {
-                current = { area: element, cell: start };
-                current.area.addClass('current-area');
-                current.area.find('.level').trigger('enter-area');
+                current.cell.append(block);
             });
         }
     }
 
     function position_area(area, cell) {
-        var position = cell.position();
-        area.css('transform', 'translate3d(' + ($(window).width() / 2 - position.left) + 'px, ' +
-                                               ($(window).height() / 2 - position.top) + 'px, 0)');
+        var position;
+        var area_width  = area.width();
+        var area_height = area.height();
+        if (area_width + 2 * AREA_PADDING > window_width || area_height + 2 * AREA_PADDING > window_height) {
+            position = cell.position();
+        }
+        area.css('transform', 'translate3d(' + (area_width  + 2 * AREA_PADDING <= window_width  ? (window_width  - area_width)  / 2 : Math.min(AREA_PADDING, Math.max(window_width  - area_width  - AREA_PADDING, window_width  / 2 - position.left))) + 'px, ' +
+                                               (area_height + 2 * AREA_PADDING <= window_height ? (window_height - area_height) / 2 : Math.min(AREA_PADDING, Math.max(window_height - area_height - AREA_PADDING, window_height / 2 - position.top))) + 'px, 0)');
     }
 });
