@@ -1,4 +1,3 @@
-var ROOM_PADDING = 50;
 var KEY_SPACE = 32;
 var KEY_LEFT = 37;
 var KEY_RIGHT = 39;
@@ -186,15 +185,15 @@ $(function() {
     var tile_width, tile_height
     function position_room(room, tile) {
         var position;
-        var room_width  = room.width();
-        var room_height = room.height();
-        if (room_width + 2 * ROOM_PADDING > window_width || room_height + 2 * ROOM_PADDING > window_height) {
+        var room_width  = room.outerWidth(true);
+        var room_height = room.outerHeight(true);
+        if (room_width > window_width || room_height > window_height) {
             position = tile.position();
             tile_width  = tile_width  || tile.width();
             tile_height = tile_height || tile.height();
         }
-        room.css('transform', 'translate3d(' + (room_width  + 2 * ROOM_PADDING <= window_width  ? (window_width  - room_width)  / 2 : Math.min(ROOM_PADDING, Math.max(window_width  - room_width  - ROOM_PADDING, (window_width  - tile_width) / 2 - position.left))) + 'px, ' +
-                                               (room_height + 2 * ROOM_PADDING <= window_height ? (window_height - room_height) / 2 : Math.min(ROOM_PADDING, Math.max(window_height - room_height - ROOM_PADDING, (window_height - tile_height) / 2 - position.top))) + 'px, 0)');
+        room.css('transform', 'translate3d(' + (room_width  <= window_width  ? (window_width  - room_width)  / 2 : Math.min(0, Math.max(window_width  - room_width,  (window_width  - tile_width) / 2 - position.left))) + 'px, ' +
+                                               (room_height <= window_height ? (window_height - room_height) / 2 : Math.min(0, Math.max(window_height - room_height, (window_height - tile_height) / 2 - position.top))) + 'px, 0)');
     }
 
     load_room('stage-selector');

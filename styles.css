@@ -109,6 +109,7 @@ h1 {
 
 
 .room {
+    margin: 50px;
     position: absolute;
 }
 .current-room {
