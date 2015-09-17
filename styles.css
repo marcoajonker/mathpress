@@ -57,7 +57,7 @@ h1 {
     transform: translateZ(50px);
 }
 
-.roll-left .front, .roll-right .front, .roll-up .front, .roll-down .front {
+.roll-left .front, .roll-right .front, .roll-up .front, .roll-down .front, .jump .front {
     background: red;
 }
 
@@ -95,6 +95,15 @@ h1 {
 @keyframes roll-down-animation {
     from { transform: rotateX(0); }
     to   { transform: rotateX(-90deg); }
+}
+
+.jump .block-inner {
+    animation: jump-animation .2s 1 linear;
+}
+@keyframes jump-animation {
+    0%   { transform: translateZ(50px); }
+    50%  { transform: translateZ(100px); }
+    100% { transform: translateZ(50px); }
 }
 
 

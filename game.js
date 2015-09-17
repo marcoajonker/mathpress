@@ -1,4 +1,5 @@
-var room_PADDING = 50;
+var ROOM_PADDING = 50;
+var KEY_SPACE = 32;
 var KEY_LEFT = 37;
 var KEY_RIGHT = 39;
 var KEY_UP = 38;
@@ -90,6 +91,9 @@ $(function() {
     function keycontrols(e) {
         var next_tile;
         switch (e.which) {
+            case KEY_SPACE:
+                next_tile = current.tile;
+                break;
             case KEY_LEFT:
                 next_tile = current.tile.prev('.tile');
                 break;
@@ -103,7 +107,7 @@ $(function() {
             default:
                 return;
         }
-        if (!next_tile.length || next_tile.hasClass('occupied')) {
+        if (!next_tile.length || (e.which !== KEY_SPACE && next_tile.hasClass('occupied'))) {
             return;
         }
         current.tile
@@ -112,7 +116,7 @@ $(function() {
         current.tile = next_tile.addClass('occupied');
         position_room(current.room, current.tile);
         toggleControls(false);
-        block.triggerAnimationClass('roll-' + KEY_NAMES[e.which], function() {
+        block.triggerAnimationClass(e.which !== KEY_SPACE ? 'roll-' + KEY_NAMES[e.which] : 'jump', function() {
             current.tile.trigger('enter-tile');
             current.tile.append(block);
             toggleControls(true);
@@ -184,13 +188,13 @@ $(function() {
         var position;
         var room_width  = room.width();
         var room_height = room.height();
-        if (room_width + 2 * room_PADDING > window_width || room_height + 2 * room_PADDING > window_height) {
+        if (room_width + 2 * ROOM_PADDING > window_width || room_height + 2 * ROOM_PADDING > window_height) {
             position = tile.position();
             tile_width  = tile_width  || tile.width();
             tile_height = tile_height || tile.height();
         }
-        room.css('transform', 'translate3d(' + (room_width  + 2 * room_PADDING <= window_width  ? (window_width  - room_width)  / 2 : Math.min(room_PADDING, Math.max(window_width  - room_width  - room_PADDING, (window_width  - tile_width) / 2 - position.left))) + 'px, ' +
-                                               (room_height + 2 * room_PADDING <= window_height ? (window_height - room_height) / 2 : Math.min(room_PADDING, Math.max(window_height - room_height - room_PADDING, (window_height - tile_height) / 2 - position.top))) + 'px, 0)');
+        room.css('transform', 'translate3d(' + (room_width  + 2 * ROOM_PADDING <= window_width  ? (window_width  - room_width)  / 2 : Math.min(ROOM_PADDING, Math.max(window_width  - room_width  - ROOM_PADDING, (window_width  - tile_width) / 2 - position.left))) + 'px, ' +
+                                               (room_height + 2 * ROOM_PADDING <= window_height ? (window_height - room_height) / 2 : Math.min(ROOM_PADDING, Math.max(window_height - room_height - ROOM_PADDING, (window_height - tile_height) / 2 - position.top))) + 'px, 0)');
     }
 
     load_room('stage-selector');
