@@ -106,12 +106,13 @@ $(function() {
         if (!next_tile.length || next_tile.hasClass('occupied')) {
             return;
         }
-        var last_tile = current.tile.removeClass('occupied');
+        current.tile
+            .removeClass('occupied')
+            .trigger('leave-tile');
         current.tile = next_tile.addClass('occupied');
         position_room(current.room, current.tile);
         toggleControls(false);
         block.triggerAnimationClass('roll-' + KEY_NAMES[e.which], function() {
-            last_tile.trigger('leave-tile');
             current.tile.trigger('enter-tile');
             current.tile.append(block);
             toggleControls(true);
@@ -155,18 +156,20 @@ $(function() {
             on_load(rooms[room_name]);
         });
         function on_load(element) {
-            last_room.triggerAnimationClass('leave', function() {
-                last_room
-                    .trigger('leave-room')
-                    .removeClass('current-room')
-                    .detach();
-            });
-            last_tile.removeClass('occupied');
+            last_room
+                .trigger('leave-room')
+                .triggerAnimationClass('leave', function() {
+                    last_room
+                        .removeClass('current-room')
+                        .detach();
+                });
+            last_tile
+                .removeClass('occupied')
+                .trigger('leave-tile');
             current = { room: element, tile: element.find(start_id ? '#' + start_id : '#start').addClass('occupied') };
             current.room.appendTo('body');
             position_room(current.room, current.tile);
             current.room.triggerAnimationClass(last_room.length ? 'enter' : 'enter-long', function() {
-                last_tile.trigger('leave-tile');
                 current.room.find('.level').trigger('enter-room');
                 current.room.addClass('current-room');
                 current.tile.trigger('enter-tile');
