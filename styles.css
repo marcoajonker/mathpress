@@ -9,52 +9,53 @@ body, html {
 h1 {
     text-align: center;
     color: white;
-    width: 360px;
+    width: 180px;
 }
 
 
 
 .block {
-    height: 100px;
-    margin: auto;
-    perspective-origin: 50% 50px;
+    height: 50px;
+    perspective-origin: 25% 25px;
     perspective: 800px;
-    width: 100px;
+    position: absolute;
+    transform: translate3d(4px,4px,0);
+    width: 50px;
 }
 .block-inner {
-    height: 100px;
+    height: 50px;
     position: relative;
     transform-style: preserve-3d;
-    width: 100px;
+    width: 50px;
 }
 .block-inner div {
     border: 1px solid black;
     background: pink;
     position: absolute;
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
 }
 .back {
-    transform: translateZ(-50px) rotateY(180deg);
+    transform: translateZ(-25px) rotateY(180deg);
 }
 .right {
-    transform: rotateY(-270deg) translateX(50px);
+    transform: rotateY(-270deg) translateX(25px);
     transform-origin: top right;
 }
 .left {
-    transform: rotateY(270deg) translateX(-50px);
+    transform: rotateY(270deg) translateX(-25px);
     transform-origin: center left;
 }
 .top {
-    transform: rotateX(-90deg) translateY(-50px);
+    transform: rotateX(-90deg) translateY(-25px);
     transform-origin: top center;
 }
 .bottom {
-    transform: rotateX(90deg) translateY(50px);
+    transform: rotateX(90deg) translateY(25px);
     transform-origin: bottom center;
 }
 .front {
-    transform: translateZ(50px);
+    transform: translateZ(25px);
 }
 
 .roll-left .front, .roll-right .front, .roll-up .front, .roll-down .front, .jump .front {
@@ -63,7 +64,7 @@ h1 {
 
 .roll-left .block-inner {
     animation: roll-left-animation .2s 1 linear;
-    transform-origin: -10px center -50px;
+    transform-origin: -5px center -25px;
 }
 @keyframes roll-left-animation {
     from { transform: rotateY(0); }
@@ -72,7 +73,7 @@ h1 {
 
 .roll-right .block-inner {
     animation: roll-right-animation .2s 1 linear;
-    transform-origin: 110px center -50px;
+    transform-origin: 55px center -25px;
 }
 @keyframes roll-right-animation {
     from { transform: rotateY(0); }
@@ -81,7 +82,7 @@ h1 {
 
 .roll-up .block-inner {
     animation: roll-up-animation .2s 1 linear;
-    transform-origin: center -10px -50px;
+    transform-origin: center -5px -25px;
 }
 @keyframes roll-up-animation {
     from { transform: rotateX(0); }
@@ -90,7 +91,7 @@ h1 {
 
 .roll-down .block-inner {
     animation: roll-down-animation .2s 1 linear;
-    transform-origin: center 110px -50px;
+    transform-origin: center 55px -25px;
 }
 @keyframes roll-down-animation {
     from { transform: rotateX(0); }
@@ -101,15 +102,15 @@ h1 {
     animation: jump-animation .2s 1 linear;
 }
 @keyframes jump-animation {
-    0%   { transform: translateZ(50px); }
-    50%  { transform: translateZ(100px); }
-    100% { transform: translateZ(50px); }
+    0%   { transform: translateZ(25px); }
+    25%  { transform: translateZ(50px); }
+    100% { transform: translateZ(25px); }
 }
 
 
 
 .room {
-    margin: 50px;
+    margin: 25px;
     position: absolute;
 }
 .current-room {
@@ -120,21 +121,17 @@ h1 {
 }
 .row {
     display: table-row;
-    height: 120px;
+    height: 60px;
 }
 .tile, .nothing {
     display: table-cell;
-    height: 120px;
-    min-width: 120px;
-    text-align: center;
-    vertical-align: middle;
-    width: 120px;
+    height: 60px;
+    max-width: 60px;
+    min-width: 60px;
+    width: 60px;
 }
 .tile {
     background: white;
-}
-.occupied {
-    background: grey;
 }
 .add {
     background: green;
