@@ -116,8 +116,11 @@ $(function() {
         position_room(current.room, current.tile);
         toggleControls(false);
         block.triggerAnimationClass(e.which !== KEY_SPACE ? 'roll-' + KEY_NAMES[e.which] : 'jump', function() {
+            var tile_offset = current.tile.offset()
+            tile_offset.left += 5;
+            tile_offset.top  += 5;
+            block.offset(tile_offset); // FIXME
             current.tile.trigger('enter-tile');
-            current.tile.append(block);
             toggleControls(true);
         });
     }
@@ -175,8 +178,9 @@ $(function() {
             current.room.triggerAnimationClass(last_room.length ? 'enter' : 'enter-long', function() {
                 current.room.find('.level').trigger('enter-room');
                 current.room.addClass('current-room');
+                current.room.append(block);
+                block.offset(current.tile.offset());
                 current.tile.trigger('enter-tile');
-                current.tile.append(block);
                 toggleControls(true);
             });
         }

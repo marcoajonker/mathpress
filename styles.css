@@ -21,7 +21,6 @@ h1 {
 .block {
     height: 50px;
     position: absolute;
-    transform: translate3d(4px,4px,0);
     width: 50px;
 }
 .block-inner {
@@ -31,6 +30,7 @@ h1 {
 }
 .block-inner div {
     background: pink;
+    border: 1px solid black;
     position: absolute;
     width: 50px;
     height: 50px;
@@ -99,7 +99,7 @@ h1 {
 }
 
 .jump .block-inner {
-    animation: jump-animation .2s 1 linear;
+    animation: jump-animation .2s 1 ease-out;
 }
 @keyframes jump-animation {
     0%   { transform: translateZ(25px); }
