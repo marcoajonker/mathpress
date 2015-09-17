@@ -1,3 +1,6 @@
+* {
+    transform-style: preserve-3d;
+}
 body {
     background: black;
     margin: 0;
@@ -16,8 +19,6 @@ h1 {
 
 .block {
     height: 50px;
-    perspective-origin: 25% 25px;
-    perspective: 800px;
     position: absolute;
     transform: translate3d(4px,4px,0);
     width: 50px;
@@ -25,7 +26,6 @@ h1 {
 .block-inner {
     height: 50px;
     position: relative;
-    transform-style: preserve-3d;
     width: 50px;
 }
 .block-inner div {
@@ -36,26 +36,26 @@ h1 {
     height: 50px;
 }
 .back {
-    transform: translateZ(-25px) rotateY(180deg);
+    transform: translateZ(0) rotateY(180deg);
 }
 .right {
-    transform: rotateY(-270deg) translateX(25px);
+    transform: rotateY(-270deg);
     transform-origin: top right;
 }
 .left {
-    transform: rotateY(270deg) translateX(-25px);
+    transform: rotateY(270deg);
     transform-origin: center left;
 }
 .top {
-    transform: rotateX(-90deg) translateY(-25px);
+    transform: rotateX(-90deg) translateY(-50px);
     transform-origin: top center;
 }
 .bottom {
-    transform: rotateX(90deg) translateY(25px);
+    transform: rotateX(90deg) translateY(50px);
     transform-origin: bottom center;
 }
 .front {
-    transform: translateZ(25px);
+    transform: translateZ(50px);
 }
 
 .roll-left .front, .roll-right .front, .roll-up .front, .roll-down .front, .jump .front {
@@ -64,7 +64,7 @@ h1 {
 
 .roll-left .block-inner {
     animation: roll-left-animation .2s 1 linear;
-    transform-origin: -5px center -25px;
+    transform-origin: -5px center 0;
 }
 @keyframes roll-left-animation {
     from { transform: rotateY(0); }
@@ -73,7 +73,7 @@ h1 {
 
 .roll-right .block-inner {
     animation: roll-right-animation .2s 1 linear;
-    transform-origin: 55px center -25px;
+    transform-origin: 55px center 0;
 }
 @keyframes roll-right-animation {
     from { transform: rotateY(0); }
@@ -82,7 +82,7 @@ h1 {
 
 .roll-up .block-inner {
     animation: roll-up-animation .2s 1 linear;
-    transform-origin: center -5px -25px;
+    transform-origin: center -5px 0;
 }
 @keyframes roll-up-animation {
     from { transform: rotateX(0); }
@@ -91,7 +91,7 @@ h1 {
 
 .roll-down .block-inner {
     animation: roll-down-animation .2s 1 linear;
-    transform-origin: center 55px -25px;
+    transform-origin: center 55px 0;
 }
 @keyframes roll-down-animation {
     from { transform: rotateX(0); }
@@ -110,6 +110,8 @@ h1 {
 
 
 .room {
+    perspective-origin: 0 0;
+    perspective: 800px;
     margin: 25px;
     position: absolute;
 }
