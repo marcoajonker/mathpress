@@ -194,9 +194,7 @@ $(function() {
         }
         var x = room_width  <= window_width  ? (window_width  - room_width)  / 2 : Math.min(0, Math.max(window_width  - room_width,  (window_width  - tile_width) / 2 - position.left));
         var y = room_height <= window_height ? (window_height - room_height) / 2 : Math.min(0, Math.max(window_height - room_height, (window_height - tile_height) / 2 - position.top));
-        room
-            .css('transform', 'translate3d(' + x + 'px,' + y + 'px, 0)')
-            .css('perspective-origin', (room_width / 2) + 'px ' + (room_height / 2) + 'px'); // FIXME
+        room.css('transform', 'translate3d(' + x + 'px,' + y + 'px, 0)');
     }
 
     load_room('stage-selector');
