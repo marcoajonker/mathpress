@@ -29,7 +29,6 @@ h1 {
     width: 50px;
 }
 .block-inner div {
-    border: 1px solid black;
     background: pink;
     position: absolute;
     width: 50px;
@@ -110,7 +109,6 @@ h1 {
 
 
 .room {
-    perspective-origin: 0 0;
     perspective: 800px;
     margin: 25px;
     position: absolute;
