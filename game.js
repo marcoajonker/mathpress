@@ -70,7 +70,6 @@ $(function() {
     };
 
     var block = block || $('<div class="block"><div class="block-inner"><div class="front"></div><div class="back"></div><div class="top"></div><div class="bottom"></div><div class="left"></div><div class="right"></div></div></div>');
-    load_room('stage-selector');
 
     var window_width  = $(window).width();
     var window_height = $(window).height();
@@ -83,7 +82,12 @@ $(function() {
         position_room(current.room, current.tile);
     });
 
-    $(document).on('keydown', function keycontrols(e) {
+    var counter = 0;
+    function toggleControls(on) {
+        counter += on ? -1 : 1;
+        $(document)[counter > 0 ? 'off' : 'on']('keydown', keycontrols);
+    }
+    function keycontrols(e) {
         var next_tile;
         switch (e.which) {
             case KEY_LEFT:
@@ -105,16 +109,17 @@ $(function() {
         var last_tile = current.tile.removeClass('occupied');
         current.tile = next_tile.addClass('occupied');
         position_room(current.room, current.tile);
-        $(document).off('keydown', keycontrols);
+        toggleControls(false);
         block.triggerAnimationClass('roll-' + KEY_NAMES[e.which], function() {
             last_tile.trigger('leave-tile');
             current.tile.trigger('enter-tile');
             current.tile.append(block);
-            $(document).on('keydown', keycontrols);
+            toggleControls(true);
         });
-    });
+    }
 
     function load_room(room_name, start_id) {
+        toggleControls(false);
         var last_room = current.room;
         var last_tile = current.tile;
         current = { room: $(), tile: $() };
@@ -166,6 +171,7 @@ $(function() {
                 current.room.addClass('current-room');
                 current.tile.trigger('enter-tile');
                 current.tile.append(block);
+                toggleControls(true);
             });
         }
     }
@@ -183,4 +189,6 @@ $(function() {
         room.css('transform', 'translate3d(' + (room_width  + 2 * room_PADDING <= window_width  ? (window_width  - room_width)  / 2 : Math.min(room_PADDING, Math.max(window_width  - room_width  - room_PADDING, (window_width  - tile_width) / 2 - position.left))) + 'px, ' +
                                                (room_height + 2 * room_PADDING <= window_height ? (window_height - room_height) / 2 : Math.min(room_PADDING, Math.max(window_height - room_height - room_PADDING, (window_height - tile_height) / 2 - position.top))) + 'px, 0)');
     }
+
+    load_room('stage-selector');
 });
