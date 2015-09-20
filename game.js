@@ -196,8 +196,8 @@ $(function() {
             tile_width  = tile_width  || tile.width();
             tile_height = tile_height || tile.height();
         }
-        var x = room_width  <= window_width  ? (window_width  - room_width)  / 2 : Math.min(0, Math.max(window_width  - room_width,  (window_width  - tile_width) / 2 - position.left));
-        var y = room_height <= window_height ? (window_height - room_height) / 2 : Math.min(0, Math.max(window_height - room_height, (window_height - tile_height) / 2 - position.top));
+        var x = room_width  <= window_width  ? (window_width  - room_width)  / 2 : Math.min(0, Math.max(window_width  - room_width,  (window_width) / 2  - tile_width + 2 - position.left));
+        var y = room_height <= window_height ? (window_height - room_height) / 2 : Math.min(0, Math.max(window_height - room_height, (window_height) / 2 - tile_height + 2 - position.top));
         room.css('transform', 'translate3d(' + x + 'px,' + y + 'px, 0)');
     }
 
