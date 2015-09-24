@@ -5,6 +5,8 @@ var KEY_UP = 38;
 var KEY_DOWN = 40;
 var KEY_NAMES = { 37: 'left', 39: 'right', 38: 'up', 40: 'down' };
 
+$.ajaxSetup ({ cache: false });
+
 $.fn.extend({
     triggerAnimationClass: function(className, callback) {
         return this

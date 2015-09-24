@@ -117,14 +117,15 @@ h1 {
     transition: all .2s ease-in-out;
 }
 .level {
-    display: table;
+    display: flex;
+    flex-direction: column;
 }
 .row {
-    display: table-row;
+    display: flex;
+    flex-direction: row;
     height: 60px;
 }
 .tile, .nothing {
-    display: table-cell;
     height: 60px;
     max-width: 60px;
     min-width: 60px;
